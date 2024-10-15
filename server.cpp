@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/01 18:45:22 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/15 23:47:32 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,10 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 
 void	Server::runtime()
 {
-	struct pollfd fds[NB_MAX_CLIENTS + 1];
-	char buffer[1024] = { 0 };
+	struct 	pollfd fds[NB_MAX_CLIENTS + 1];
+	char 	buffer[1024] = { 0 };
 
+	(void) buffer; // add by Maxime for compilation
 	while (1)
 	{
 		bool	new_client = false;
