@@ -13,11 +13,11 @@ IRC server:
 IRC client:
 Context: Using Hexchat I can create a client and connect it to a network (group of server).
 Commands:
-/nick <nickname>: change nickname
-/join <# channel> [password]: create or join a channel ?channel password?
-/pass: 
-/user <username> <hostname> <servername> <realname> 
-/msg <nickname> <private messsage>
+- /nick <nickname>: change nickname
+- /join <# channel> [password]: create or join a channel ?channel password?
+- /pass: 
+- /user <username> <hostname> <servername> <realname> 
+- /msg <nickname> <private messsage>
 Examples:
 - HexChat (most popular)
 - WeeChat
