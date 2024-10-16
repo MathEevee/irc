@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:36:54 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/16 19:39:00 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/17 00:56:14 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ class Client
 		std::string	_message_buffer; // data send to the server
 	
 	public :
+		bool			checkUser(std::string data); // We can do create this same system of checking for each command
+		// bool checkNick ....  
+
+		void			set_socket_fd(int socket_fd);
+		void			set_status(int status);
+		void			set_message(std::string message);
+		void			set_username(std::string username);
+		void			set_real_name(std::string real_name);
+		void			setNickname(std::string nickname);
+
 		int				get_socket_fd(void);
 		int				get_status(void);
 		// int				get_count_connexion(void);
@@ -35,14 +45,6 @@ class Client
 		std::string		get_username(void);
 		std::string		get_real_name(void);
 		// std::string		get_nickname(void);
-
-		void			set_socket_fd(int socket_fd);
-		void			set_status(int status);
-		void			set_message(std::string message);
-		bool			set_user(std::string data);
-		void			set_username(std::string username);
-		void			set_real_name(std::string real_name);
-		// void			set_nickname(std::string nickname);
 
 		Client(int socket_fd);
 		~Client();

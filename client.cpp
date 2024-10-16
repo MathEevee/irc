@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:47:20 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/16 20:58:34 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/17 00:55:15 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Client::Client(int socket_fd)
 	this->set_socket_fd(socket_fd);
 	this->set_status(0);
 	this->set_username("");
-	this->set_nickname("");
+	this->setNickname("");
 	this->set_real_name("");
 }
 
@@ -36,7 +36,7 @@ std::string	Client::get_message()
 	return (this->_message_buffer);
 }
 
-bool		Client::set_user(std::string data)
+bool		Client::checkUser(std::string data)
 {
 	std::string username;
 	std::string real_name;
@@ -82,10 +82,10 @@ void		Client::set_real_name(std::string real_name)
 	this->_real_name = real_name;
 }
 
-// void		Client::set_nickname(std::string nickname)
-// {
-// 	this->_nickname = nickname;
-// }
+void		Client::setNickname(std::string nickname)
+{
+	this->_nickname = nickname;
+}
 
 void	Client::set_socket_fd(int socket_fd)
 {
