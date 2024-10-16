@@ -19,7 +19,14 @@ Commands:
 - /user <username> <hostname> <servername> <realname> 
 - /msg <nickname> <private messsage>.
 Examples:
+- Via terminal using: nc localhost <port>
 - HexChat (most popular)
 - WeeChat
 - irssi
+
+Step 1: Launch the server with a port and a passpord
+Step 2: Create a client and connection him to a port server
+Step 3: Unlock command sending the password to the server
+Step 4: 
+
 
