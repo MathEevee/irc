@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:47:20 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/01 17:07:44 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/16 18:39:55 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ Client::Client(int socket_fd)
 {
 	this->set_socket_fd(socket_fd);
 	this->set_status(0);
-	this->set_count_connexion(0);
+	// this->set_username("");
+	// this->set_nickname("");
+	// this->set_real_name("");
 }
 
 int	Client::get_status()
@@ -29,29 +31,49 @@ int	Client::get_socket_fd()
 	return (this->_socket_fd);
 }
 
-int	Client::get_count_connexion()
-{
-	return (this->_count_connexion);
-}
-
 std::string	Client::get_message()
 {
-	return (this->_message);
+	return (this->_message_buffer);
 }
+
+// std::string		Client::get_username(void)
+// {
+	// return (this->_username);
+// }
+
+// std::string		Client::get_real_name(void)
+// {
+	// return (this->_real_name);
+// }
+
+// std::string		Client::get_nickname(void)
+// {
+	// return (this->_nickname);
+// }
+
+// void		Client::set_username(std::string username)
+// {
+// 	this->_username = username;
+// }
+
+// void		Client::set_real_name(std::string real_name)
+// {
+// 	this->_real_name = real_name;
+// }
+
+// void		Client::set_nickname(std::string nickname)
+// {
+// 	this->_nickname = nickname;
+// }
 
 void	Client::set_socket_fd(int socket_fd)
 {
 	this->_socket_fd = socket_fd;
 }
 
-void	Client::set_count_connexion(int count_connexion)
-{
-	this->_count_connexion = count_connexion;
-}
-
 void	Client::set_message(std::string message)
 {
-	this->_message = message;
+	this->_message_buffer = message;
 }
 
 void	Client::set_status(int status)

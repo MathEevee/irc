@@ -6,19 +6,19 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:40:59 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/15 23:49:43 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/16 17:41:03 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cstring>
-#include <iostream>
-#include <iomanip>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <cstdlib>
-#include <csignal>
-#include "server.hpp"
+# include <cstring>
+# include <iostream>
+# include <iomanip>
+# include <netinet/in.h>
+# include <sys/socket.h>
+# include <unistd.h>
+# include <cstdlib>
+# include <csignal>
+# include "server.hpp"
 
 void	handler(int num)
 {
@@ -33,31 +33,3 @@ int main(int ac, char **av)
 	Server	serv(std::atoi(av[1]), av[2]);
     close(serv.getServSocket());
 }
-
-// int main()
-// {
-//     // creating socket
-//     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-
-//     // specifying address
-//     sockaddr_in serverAddress;
-//     serverAddress.sin_family = AF_INET;
-//     serverAddress.sin_port = htons(8080);
-//     serverAddress.sin_addr.s_addr = INADDR_ANY;
-
-//     // sending connection request
-//     connect(clientSocket, (struct sockaddr*)&serverAddress,
-//             sizeof(serverAddress));
-
-//     // sending data
-// 	std::string	message;
-// 	while (getline(std::cin, message))
-// 	{
-//     	send(clientSocket, message.c_str(), message.size(), 0);
-// 		message = "";
-// 	}
-//     // closing socket
-//     close(clientSocket);
-
-//     return 0;
-// }

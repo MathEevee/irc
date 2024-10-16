@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/15 23:47:32 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/16 18:43:05 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ bool	Server::add_client()
 		{
 			Client	new_client(clientSocket);
 			this->_tab_client.push_back(new_client);
+			std::cout << "Client connected" << std::endl;
 			return (true);
 		}
 	}
@@ -70,27 +71,17 @@ bool	Server::check_password(Client &client, std::string password)
 {
 	std::cout << "message |"<< password<<"|" << std::endl;
 	// std::cout << this->get_password() << std::endl;
-	if (client.get_count_connexion() == 2 && this->get_password() != password)
-	{
-		//add convert hexchat
-		std::cout << "Bad password 3 times" << std::endl;
-		return (false);
-	}
 	if (this->get_password() == password)
 	{
 		std::cout << "Good password" << std::endl;
 		client.set_status(1);
+		return (true);
 	}
-	else
-	{
-		if (this->get_password() != password)
-			client.set_count_connexion(client.get_count_connexion() + 1);
-	}
-	return (true);
+	return (false);
 }
 
 
-bool	Server::set_commande(Client &client)
+bool	Server::set_commands(Client &client)
 {
 	std::string message = client.get_message();
 	while (message.find("\n") != std::string::npos)
@@ -102,8 +93,9 @@ bool	Server::set_commande(Client &client)
 			return (check_password(client, commande));
 		else
 		{
-			//parsing commande
-			std::cout << commande << std::endl;
+			std::cout << "f" << commande << std::endl;
+			if (commande == "USER")
+			
 		}
 	}
 	return (true);
@@ -127,7 +119,7 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 				if (size == 0)
 				{
 					close(it->get_socket_fd());
-					std::cout << "disconnected" << std::endl;
+					std::cout << "Client disconnected." << std::endl;
 					it = this->_tab_client.erase(it);
 				}
 				buffer[size] = 0;
@@ -135,12 +127,7 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 				it->set_message(message);
 			} while (size == 1024);
 
-			connexion = set_commande(*it);
-			if (connexion == false)
-			{
-				close(it->get_socket_fd());
-				it = this->_tab_client.erase(it);
-			}
+			connexion = set_commands(*it);
 			i++;
 			if (size == 0)
 				continue;
@@ -153,9 +140,7 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 void	Server::runtime()
 {
 	struct 	pollfd fds[NB_MAX_CLIENTS + 1];
-	char 	buffer[1024] = { 0 };
 
-	(void) buffer; // add by Maxime for compilation
 	while (1)
 	{
 		bool	new_client = false;
