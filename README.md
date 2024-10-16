@@ -16,7 +16,7 @@ Commands:
 - /nick <nickname>: change nickname
 - /join <# channel> [password]: create or join a channel ?channel password?
 - /pass: 
-- /user <username> <hostname> <servername> <realname> : <hostname> <servername> ignored by IRC
+- /user <username> <hostname> <servername> <realname> 
 - /msg <nickname> <private messsage>.
 Examples:
 - HexChat (most popular)

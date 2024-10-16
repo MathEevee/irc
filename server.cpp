@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/16 18:43:05 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/16 20:55:19 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,23 @@ bool	Server::check_password(Client &client, std::string password)
 	return (false);
 }
 
+void	Server::commands_parsing(Client &client, std::string commande)
+{
+	std::string	first_word = commande.substr(0, commande.find(' '));
+	bool	cmd = false;
+	std::cout << "first_word : " << first_word << std::endl;
+	if (first_word == "USER")
+		cmd = client.set_user(commande.substr(commande.find(' ') + 1));
+	// else if ()
+	// else if ()
+	// else if ()
+	// else if ()
+	// else if ()
+	// else if ()
+	// else if ()
+}
+
+
 
 bool	Server::set_commands(Client &client)
 {
@@ -93,8 +110,9 @@ bool	Server::set_commands(Client &client)
 			return (check_password(client, commande));
 		else
 		{
-			std::cout << "f" << commande << std::endl;
-			if (commande == "USER")
+			// std::cout << "f" << commande << std::endl;
+			// if (commande == "USER")
+			commands_parsing(client, commande);
 			
 		}
 	}
