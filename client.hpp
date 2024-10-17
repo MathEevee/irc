@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:36:54 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/17 00:56:14 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/17 16:58:20 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iomanip>
 # include <iostream>
+# include <sstream>
 
 class Client
 {
@@ -45,6 +46,9 @@ class Client
 		std::string		get_username(void);
 		std::string		get_real_name(void);
 		// std::string		get_nickname(void);
+
+		void			send_error(int error, std::string msg_error);
+
 
 		Client(int socket_fd);
 		~Client();

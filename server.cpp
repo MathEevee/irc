@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/17 00:55:05 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/17 17:15:42 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,18 @@ bool	Server::add_client()
 // Check is the provide password is the good password
 bool	Server::check_password(Client &client, std::string password)
 {
-	std::cout << "message |"<< password<<"|" << std::endl;
-	// std::cout << this->getPassword() << std::endl;
-	if (this->getPassword() == password)
+	if (this->getPassword() == password && client.get_status() == 0)
 	{
 		std::cout << "Good password" << std::endl;
 		client.set_status(1);
 		return (true);
 	}
+	else if (client.get_status() == 1)
+	{
+		client.send_error(462, ":You may not reregister");
+		return (true);
+	}
+	client.send_error(464, ":Password incorrect");
 	return (false);
 }
 
@@ -55,7 +59,9 @@ void	Server::commands_parsing(Client &client, std::string command)
 	
 	std::string	first_word = command.substr(0, command.find(' '));
 	std::cout << "First word: " << first_word << std::endl;
-	if (first_word == "USER")
+	if (first_word == "PASS")
+		cmd_result = check_password(client, command.substr(command.find(' ') + 1));
+	else if (first_word == "USER")
 		cmd_result = client.checkUser(command.substr(command.find(' ') + 1));
 	// else if (first_word == "NICK")
 	// 	cmd_result = client.setNickname(command.substr(command.find(' ') + 1));
@@ -77,14 +83,7 @@ bool	Server::set_commands(Client &client)
 		std::string command = message.substr(0, message.find("\n"));
 		message = message.substr(message.find("\n") + 1);
 		client.set_message(message);
-		if (client.get_status() == 0)
-			return (check_password(client, command));
-		else
-		{
-			// std::cout << "f" << command << std::endl;
-			// if (command == "USER")
 			commands_parsing(client, command);
-		}
 	}
 	return (true);
 }
