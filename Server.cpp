@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 11:17:42 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:38:17 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,15 @@ void	Server::commands_parsing(Client &client, std::string command)
 	std::cout << "First word: " << first_word << std::endl;
 	if (first_word == "PASS")
 		cmd_result = checkPass(client, command.substr(command.find(' ') + 1));
-	else if (first_word == "USER")
+	//add checkpoint connection for PASS, not connected send error & stop 
+	if (first_word == "USER")
 		cmd_result = checkUser(client, command.substr(command.find(' ') + 1));
 	else if (first_word == "NICK")
 		cmd_result = checkNick(client, command.substr(command.find(' ') + 1));
-	else
-		(void) cmd_result; // line to delete
+	//add checkpoint to check user initialized, not initialized send error & stop
+	if (first_word == "PRIVMSG")
+		cmd_result = checkPrivmsg(client, command.substr(command.find(' ') + 1));
+	(void) cmd_result; // line to delete
 	// else if ()
 	// else if ()
 	// else if ()

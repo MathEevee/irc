@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:58:11 by mbriand           #+#    #+#             */
-/*   Updated: 2024/10/18 01:30:46 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/18 14:04:26 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,13 @@ bool	Server::checkUser(Client& client, std::string data)
 	std::cout << "data = " << data << std::endl;
 	if (client.getStatus() == 0)
 	{
+		//add error_send
 		std::cout << "Client not connected, use command 'PASS'" << std::endl;
 		return (false);
 	}
-
+	
+	// checkData for #, @ 
+	
 	if (!client.getUsername().size())
 	{
 		if (data.find(' ') == std::string::npos)
@@ -57,12 +60,19 @@ bool	Server::checkUser(Client& client, std::string data)
 			if (i == 3)
 				real_name = data.substr(data.find_last_of(' ') + 1);
 			tmp = tmp.substr(tmp.find(' ') + 1);
+			if (isalpha(tmp[0]) < 0)
+			{
+				//check_len
+				//bad letter for arg
+			}
 			i++;
 		}
 
 		if (tmp != real_name)
+		{
+			//error to many args
 			return (false);
-
+		}
 		client.setUsername(username);
 		client.setRealName(real_name);
 		return (true);
@@ -128,9 +138,28 @@ Client* Server::findClientByNick(const std::string& nick)
 }
 
 // PRIV <nickname> <message>
-bool	checkPrivmsg(Client &client, std::string data)
+bool	Server::checkPrivmsg(Client &client, std::string data)
 {
-	(void) data;
-	(void) client;
+	std::string recipient = data.substr(0, data.find(' '));
+	
+	if (recipient[0] == '#')
+	{
+		std::cout << "send in channel : " << recipient << " : " << data.substr(data.find(' ') + 1) << std::endl; 
+		//checkChannel & send message or error, channel doesn't exist
+	}
+	else
+	{
+		Client *interlocutor = this->findClientByNick(recipient);
+		if (interlocutor == NULL)
+		{
+			std::cout << "976 can't send message to user :" << recipient << std::endl;
+			//send error interlocutor doesn't exist
+		}
+		else
+		{
+			client.send_private_message(*interlocutor, data.substr(data.find(' ') + 1));
+		}
+			
+	}
 	return (false);
 }
