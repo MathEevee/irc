@@ -6,19 +6,12 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:40:59 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/17 00:10:52 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/18 01:03:35 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cstring>
-# include <iostream>
-# include <iomanip>
-# include <netinet/in.h>
-# include <sys/socket.h>
-# include <unistd.h>
-# include <cstdlib>
 # include <csignal>
-# include "server.hpp"
+# include "Server.hpp"
 
 void	handler(int num)
 {

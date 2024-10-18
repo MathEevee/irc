@@ -3,8 +3,9 @@ FLAGS = -Wall -Wextra -Werror -std=c++98 -g
 CPP = c++
 
 SRC =	main.cpp \
-		client.cpp \
-		server.cpp
+		Client.cpp \
+		Server.cpp \
+		ServerCommand.cpp
 
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
 
@@ -23,3 +24,5 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all re fclean clean

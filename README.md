@@ -12,6 +12,12 @@ IRC server:
 
 IRC client:
 Context: Using Hexchat I can create a client and connect it to a network (group of server).
+Components:
+- Username:
+- Realname:
+- Nickname: Unique client id that other clients can use to communicate with it.
+- Status:
+- SocketFd:
 Commands:
 - /nick <nickname>: change nickname
 - /join <# channel> [password]: create or join a channel ?channel password?
