@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:47:20 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 01:23:09 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/18 11:30:10 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	Client::send_error(int error, std::string msg_error)
 	
 	out << error;
 	std::string msg = ":127.0.0.1 " + out.str() + " " + msg_error;
+	send(this->getSocketFd(), msg.c_str(), msg.size(), 0);
 	// std::cout << msg << std::endl;
 	std::cout << msg_error << std::endl;
 }

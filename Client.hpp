@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:36:54 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 11:15:58 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:29:16 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iomanip>
 # include <iostream>
 # include <sstream>
+# include <sys/socket.h>
 
 class Client
 {
@@ -34,9 +35,6 @@ class Client
 	
 	public :
 		void		send_error(int error, std::string msg_error);
-
-		void			send_error(int error, std::string msg_error);
-
 
 		Client(int socket_fd);
 		~Client();
