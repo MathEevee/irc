@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:58:11 by mbriand           #+#    #+#             */
-/*   Updated: 2024/10/18 14:04:26 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:49:22 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ bool	Server::checkPass(Client &client, std::string password)
 {
 	if (this->getPassword() == password && client.getStatus() == 0)
 	{
-		std::cout << "Good password" << std::endl;
+		std::cout << "Client authentificated." << std::endl;
+		std::string client_msg = ":" + _name + ": Your are authentificated." + "\n";
+		send(client.getSocketFd(), client_msg.c_str(), client_msg.size(), 0);		
 		client.setStatus(1);
 		return (true);
 	}
@@ -26,7 +28,7 @@ bool	Server::checkPass(Client &client, std::string password)
 		client.send_error(462, ":You may not reregister");
 		return (true);
 	}
-	client.send_error(464, ":Password incorrect");
+	client.send_error(464, "Failed password attempt.");
 	return (false);
 }
 
@@ -123,6 +125,9 @@ bool	Server::checkNick(Client &client, std::string data) // recheck this functio
 		return (false);
 	}
 	client.setNickname(data);
+	std::cout << "Client set a valid nickname: " << data << std::endl;
+	std::string client_msg = ":" + _name + " " + client.getNickname() + " :Your Nickname is set." + "\n";
+	send(client.getSocketFd(), client_msg.c_str(), client_msg.size(), 0);
 	return (true);
 }
 
@@ -160,6 +165,25 @@ bool	Server::checkPrivmsg(Client &client, std::string data)
 			client.send_private_message(*interlocutor, data.substr(data.find(' ') + 1));
 		}
 			
+	}
+	return (false);
+}
+
+// QUIT :jdjdjjd (with a reason)
+// QUIT (without reason)
+bool Server::checkQuit(Client &client, std::string data)
+{
+	if (data.empty())
+	{
+		std::cout << "Client quit without a reason." << std::endl;
+		// client.disconnect();
+		return (true);
+	}
+	if (data[0] == ':' && data.size() < 100)
+	{
+		std::cout << "Client quit with reason: " << data.substr(1) << std::endl;
+		// client.disconnect(data.substr(1));
+		return (true);
 	}
 	return (false);
 }

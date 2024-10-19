@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 13:38:17 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:16:37 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ bool	Server::add_client()
 		{
 			Client	new_client(clientSocket);
 			this->_client_list.push_back(new_client);
-			std::cout << "Client connected" << std::endl;
+			std::cout << "New client connected." << std::endl;
 			return (true);
 		}
 	}
@@ -130,7 +130,6 @@ void	Server::commands_parsing(Client &client, std::string command)
 	cmd_result = false; // the purpose of the var is to get the result exe of the command?
 	first_word = command.substr(0, command.find(' '));
 	
-	std::cout << "First word: " << first_word << std::endl;
 	if (first_word == "PASS")
 		cmd_result = checkPass(client, command.substr(command.find(' ') + 1));
 	//add checkpoint connection for PASS, not connected send error & stop 
@@ -152,6 +151,7 @@ void	Server::commands_parsing(Client &client, std::string command)
 
 Server::Server(int port, std::string password)
 {
+	this->_name = "thewonderfulserver";
 	this->_password = password;
 	this->_server_socket = socket(AF_INET, SOCK_STREAM, 0);
 

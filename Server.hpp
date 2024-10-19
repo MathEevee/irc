@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:25:59 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 13:35:25 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:53:35 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@
 class Server
 {
 	private :
-		int						_server_socket;
-		// int						_port;
-		sockaddr_in 			_serverAddress;
-		std::vector<Client>		_client_list;
-		std::string				_password;
+		std::string			_name;
+		int					_server_socket;
+		sockaddr_in 		_serverAddress;
+		std::vector<Client>	_client_list;
+		std::string			_password;
+		// int					_port;
 
 		void	runtime();
 		void	initialize_poll_fds(struct pollfd fds[NB_MAX_CLIENTS + 1]);
@@ -55,8 +56,22 @@ class Server
 		bool	checkUser(Client &client, std::string data);
 		bool	checkNick(Client &client, std::string data);
 		bool	checkPrivmsg(Client &client, std::string data);
-		Client* findClientByNick(const std::string& nick);
+		bool 	checkQuit(Client &client, std::string data);
+		// PRIVMSG
+		// Ping
+		// pong
 
+	// channel management
+		// JOIN msg
+		// privmsg
+		// PART
+
+	// operators commands
+		// MODE
+		// TOPIC?
+		// INVIT
+		// KICK
+		Client* findClientByNick(const std::string& nick);
 
 
 	public :
