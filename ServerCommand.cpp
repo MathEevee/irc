@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:58:11 by mbriand           #+#    #+#             */
-/*   Updated: 2024/10/18 18:49:22 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/20 01:41:19 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,19 +171,51 @@ bool	Server::checkPrivmsg(Client &client, std::string data)
 
 // QUIT :jdjdjjd (with a reason)
 // QUIT (without reason)
-bool Server::checkQuit(Client &client, std::string data)
+// bool Server::checkQuit(Client &client, std::string data)
+// {
+// 	if (data.empty())
+// 	{
+// 		std::cout << "Client quit without a reason." << std::endl;
+// 		// client.disconnect();
+// 		return (true);
+// 	}
+// 	if (data[0] == ':' && data.size() < 100)
+// 	{
+// 		std::cout << "Client quit with reason: " << data.substr(1) << std::endl;
+// 		// client.disconnect(data.substr(1));
+// 		return (true);
+// 	}
+// 	return (false);
+// }
+
+/*
+	1. Join or create a non-protected channel: "JOIN #publicChannel"
+	2. Password-protected: "JOIN #privateChannel password123"
+	3. Join several channel?
+*/
+bool 	Server::checkJoin(Client &client, std::string data)
 {
-	if (data.empty())
+	std::string client_msg;
+	std::string	channel;
+
+	std::cout << "'" << data << "'" << std::endl;
+
+	// if (data == std::string::npos)
+	// {
+	// 	std::cout << "Usage: JOIN <channel>, joins the channel" << std::endl;
+	// 	return (false);
+	// }
+
+	if (data[0] != '#')
 	{
-		std::cout << "Client quit without a reason." << std::endl;
-		// client.disconnect();
-		return (true);
+		client_msg = ":" + _name + " 403 " + client.getNickname() + " :No such channel \n"; // add param
+		send(client.getSocketFd(), client_msg.c_str(), client_msg.size(), 0);
+
+		// client.send_error(433, data + " :No such channel");		
+// >> @time=2024-10-19T22:56:24.371Z :zinc.libera.chat 403 djjd d :No such channel		
+		return (false);
 	}
-	if (data[0] == ':' && data.size() < 100)
-	{
-		std::cout << "Client quit with reason: " << data.substr(1) << std::endl;
-		// client.disconnect(data.substr(1));
-		return (true);
-	}
-	return (false);
+	
+	return (true);
+
 }

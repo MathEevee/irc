@@ -6,13 +6,14 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:25:59 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 18:53:35 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/20 01:39:13 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
+# include "Client.hpp"
 # include <cstring>
 # include <iostream>
 # include <netinet/in.h>
@@ -20,21 +21,14 @@
 # include <unistd.h>
 # include <vector>
 # include <poll.h>
-# include "Client.hpp"
-#include <algorithm>
+# include <algorithm>
 # define NB_MAX_CLIENTS 999
 
-// Maybe have to delete ?
-#include <csignal>
-#include <cstdlib>
-#include <errno.h>
-# include <cstring>
-# include <iostream>
-# include <iomanip>
-# include <netinet/in.h>
-# include <sys/socket.h>
-# include <unistd.h>
+# include <csignal>
 # include <cstdlib>
+# include <errno.h>
+# include <iomanip>
+# include <string>
 
 class Server
 {
@@ -57,6 +51,7 @@ class Server
 		bool	checkNick(Client &client, std::string data);
 		bool	checkPrivmsg(Client &client, std::string data);
 		bool 	checkQuit(Client &client, std::string data);
+		bool 	checkJoin(Client &client, std::string data);		
 		// PRIVMSG
 		// Ping
 		// pong

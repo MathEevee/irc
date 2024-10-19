@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 18:16:37 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/20 01:51:35 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,31 +122,31 @@ bool	Server::process_commands(Client &client)
 }
 
 // Parse and execute the command based on the first word
-void	Server::commands_parsing(Client &client, std::string command)
+void	Server::commands_parsing(Client &client, std::string input)
 {
-	bool	cmd_result;
-	std::string	first_word;
+	bool		result;
+	std::string	command;
+	// size_t		command_len;
 
-	cmd_result = false; // the purpose of the var is to get the result exe of the command?
-	first_word = command.substr(0, command.find(' '));
-	
-	if (first_word == "PASS")
-		cmd_result = checkPass(client, command.substr(command.find(' ') + 1));
+	result = false;
+	// command_len = input.find(' ');
+	command = input.substr(0, input.find(' '));
+	if (input.find(' ') ==  std::string::npos)
+		return ;
+	if (command == "PASS")
+		result = checkPass(client, input.substr(input.find(' ') + 1));
 	//add checkpoint connection for PASS, not connected send error & stop 
-	if (first_word == "USER")
-		cmd_result = checkUser(client, command.substr(command.find(' ') + 1));
-	else if (first_word == "NICK")
-		cmd_result = checkNick(client, command.substr(command.find(' ') + 1));
+	if (command == "USER")
+		result = checkUser(client, input.substr(input.find(' ') + 1));
+	if (command == "NICK")
+		result = checkNick(client, input.substr(input.find(' ') + 1));
 	//add checkpoint to check user initialized, not initialized send error & stop
-	if (first_word == "PRIVMSG")
-		cmd_result = checkPrivmsg(client, command.substr(command.find(' ') + 1));
-	(void) cmd_result; // line to delete
-	// else if ()
-	// else if ()
-	// else if ()
-	// else if ()
-	// else if ()
-	// else if ()
+	if (command == "PRIVMSG")
+		result = checkPrivmsg(client, input.substr(input.find(' ') + 1));
+	if (command == "JOIN")
+		result = checkJoin(client, input.substr(input.find(' ') + 1));
+
+	(void) result; // how do u want to use this variable?
 }
 
 Server::Server(int port, std::string password)
