@@ -5,7 +5,8 @@ CPP = c++
 SRC =	main.cpp \
 		Client.cpp \
 		Server.cpp \
-		ServerCommand.cpp
+		ServerCommand.cpp \
+		Channel.cpp
 
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
 
