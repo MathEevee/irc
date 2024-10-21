@@ -5,8 +5,12 @@ CPP = c++
 SRC =	main.cpp \
 		Client.cpp \
 		Server.cpp \
-		ServerCommand.cpp \
-		Channel.cpp
+		ServerCommandMerge.cpp \
+		ServerCommandMaxime.cpp \
+		ServerCommandMathilde.cpp \
+		ChannelMerge.cpp \
+		ChannelMaxime.cpp \
+		ChannelMathilde.cpp
 
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
 

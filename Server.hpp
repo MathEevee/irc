@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:25:59 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/21 01:13:28 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/22 01:18:45 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <iomanip>
 # include <string>
 # include <ctime>
+# include <cctype>
 
 class Client;
 class Channel;
@@ -52,9 +53,9 @@ class Server
 		void	read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_client);
 		bool	process_commands(Client &client);
 
-		bool	checkPass(Client &client, std::string password);
+		bool	checkPass(Client &client, std::string param);
+		bool	checkNick(Client &client, std::string param);
 		bool	checkUser(Client &client, std::string data);
-		bool	checkNick(Client &client, std::string data);
 		bool	checkPrivmsg(Client &client, std::string data);
 		// bool 	checkQuit(Client &client, std::string data);
 		bool 	checkJoin(Client &client, std::string param);		
@@ -64,6 +65,7 @@ class Server
 		std::string	find_current_time();
 		Channel*	find_channel_by_name(std::string& channel_name);
 		void		send_log_message(int clientSocket, const std::string& message);
+		void		send_msg_to_client(const Client& client, std::string code, std::string msg_error);
 
 
 	// channel management
@@ -76,7 +78,6 @@ class Server
 		// TOPIC?
 		// INVIT
 		// KICK
-		Client* findClientByNick(const std::string& nick);
 
 
 	public :

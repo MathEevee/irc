@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:47:20 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/20 01:01:09 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/21 23:47:08 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	Client::send_error(int error, std::string msg_error)
 	
 	std::cout << error << std::endl;
 	out << error;
-	std::string msg = ":127.0.0.1 " + out.str() + " " + msg_error;
+	std::string msg = ":127.0.0.1 " + out.str() + " " + msg_error + "\r\n";
 	send(this->getSocketFd(), msg.c_str(), msg.size(), 0);
 	std::cerr << msg_error << std::endl;
 }
@@ -42,32 +42,32 @@ Client::Client(int socket_fd)
 Client::~Client()
 {}
 
-std::string	Client::getUsername(void)
+std::string	Client::getUsername(void) const
 {
 	return (this->_username);
 }
 
-std::string	Client::getRealName(void)
+std::string	Client::getRealName(void) const
 {
 	return (this->_real_name);
 }
 
-std::string	Client::getNickname(void)
+std::string	Client::getNickname(void) const
 {
 	return (this->_nickname);
 }
 
-int	Client::getStatus()
+int	Client::getStatus() const
 {
 	return (this->_status);
 }
 
-int	Client::getSocketFd()
+int	Client::getSocketFd() const
 {
 	return (this->_socket_fd);
 }
 
-std::string	Client::getMessage()
+std::string	Client::getMessage() const
 {
 	return (this->_message_buffer);
 }

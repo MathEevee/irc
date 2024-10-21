@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/20 01:51:35 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/22 00:16:21 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,24 @@ void	Server::commands_parsing(Client &client, std::string input)
 		result = checkJoin(client, input.substr(input.find(' ') + 1));
 
 	(void) result; // how do u want to use this variable?
+}
+
+/* ERRORS MESSAGES EXAMPLES
+	:irc.nlnog.net 462 ok :Unauthorized command (already registered)
+	:irc.choopa.net 462 pa :You may not reregister
+	:irc.choopa.net 432 pa djdwsm* :Erroneous Nickname
+	:irc.choopa.net 482 pa #test :You're not channel operator	
+	:localhost errcode nickname: msg_error
+*/
+// :irc.choopa.net 315 pa # :End of /WHO list.
+// :irc.choopa.net 352 pa # evol efnut.com irc.homelien.no evol H@ :0 evol
+
+void	Server::send_msg_to_client(const Client& client, std::string code, std::string msg_error)
+{
+	std::string msg;
+
+	msg = ":localhost " + code + client.getNickname() + " " + msg_error + "\n";
+	send(client.getSocketFd(), msg.c_str(), msg.size(), 0);
 }
 
 Server::Server(int port, std::string password)

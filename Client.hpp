@@ -6,7 +6,7 @@
 /*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:36:54 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 16:43:55 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/22 00:04:08 by mbriand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Client
 		// servername ??
 		std::string	_real_name;
 		std::string	_nickname;
-		int			_status;
+		int			_status; // 1 is password ok
 		int			_socket_fd;
 		std::string	_message_buffer; // data send to the server
 		// std::vector<Channel> _channel_list;	
@@ -47,12 +47,12 @@ class Client
 		void		setSocketFd(int socket_fd);
 		void		setMessage(std::string message);
 
-		std::string	getUsername(void);
-		std::string	getRealName(void);
-		std::string	getNickname(void);
-		int			getStatus(void);
-		int			getSocketFd(void);
-		std::string	getMessage(void);
+		std::string	getUsername(void) const;
+		std::string	getRealName(void) const;
+		std::string	getNickname(void) const;
+		int			getStatus(void) const;
+		int			getSocketFd(void) const;
+		std::string	getMessage(void) const;
 };
 
 #endif
