@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:47:20 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/20 01:01:09 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/21 13:41:17 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	Client::send_private_message(Client &recipient, std::string msg)
 {
-	std::string all_message = this->getNickname() + ": " + msg + "\r\n";	
+	std::string all_message = this->getNickname() + ": " + msg + "\r\n";
 	send(recipient.getSocketFd(), all_message.c_str(), all_message.size(), 0);
 }
 
@@ -24,7 +24,7 @@ void	Client::send_error(int error, std::string msg_error)
 	
 	std::cout << error << std::endl;
 	out << error;
-	std::string msg = ":127.0.0.1 " + out.str() + " " + msg_error;
+	std::string msg = ":127.0.0.1 " + out.str() + " " + msg_error + "\r\n";
 	send(this->getSocketFd(), msg.c_str(), msg.size(), 0);
 	std::cerr << msg_error << std::endl;
 }
@@ -36,6 +36,7 @@ Client::Client(int socket_fd)
 	this->setNickname("");
 	this->setStatus(0);
 	this->setSocketFd(socket_fd);
+	this->setDisconnected(false);
 	// set other elements?
 }
 
@@ -72,6 +73,11 @@ std::string	Client::getMessage()
 	return (this->_message_buffer);
 }
 
+bool	Client::getDisconnected()
+{
+	return (this->_disconnected);
+}
+
 void	Client::setUsername(std::string username)
 {
 	this->_username = username;
@@ -89,6 +95,8 @@ void	Client::setNickname(std::string nickname)
 
 void	Client::setStatus(int status)
 {
+	if (status == true)
+		close(this->getSocketFd());
 	this->_status = status;
 }
 
@@ -101,3 +109,9 @@ void	Client::setMessage(std::string message)
 {
 	this->_message_buffer = message;
 }
+
+void	Client::setDisconnected(bool status)
+{
+	this->_disconnected = status;
+}
+

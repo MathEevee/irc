@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerCommand.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:58:11 by mbriand           #+#    #+#             */
-/*   Updated: 2024/10/21 01:14:08 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/21 14:39:04 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,12 @@ bool	Server::checkUser(Client& client, std::string data)
 		return (false);
 	}
 	
-	// checkData for #, @ 
+	// checkData for #, @
+	for (std::string::iterator it = data.begin(); it != data.end(); it++)
+	{
+		if (isalnum(*it) != 0 || *it != ' ' || )
+			//bad data return false
+	}
 	
 	if (!client.getUsername().size())
 	{
@@ -183,9 +188,8 @@ bool	Server::checkPrivmsg(Client &client, std::string data)
 // 	{
 // 		std::cout << "Client quit with reason: " << data.substr(1) << std::endl;
 // 		// client.disconnect(data.substr(1));
-// 		return (true);
 // 	}
-// 	return (false);
+//	return (true);
 // }
 
 /*

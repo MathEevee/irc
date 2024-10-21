@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:36:54 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/18 16:43:55 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/21 13:27:36 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CLIENT_HPP
 
 # include <iomanip>
+# include <unistd.h>
 # include <iostream>
 # include <sstream>
 # include <sys/socket.h>
@@ -29,6 +30,7 @@ class Client
 		int			_status;
 		int			_socket_fd;
 		std::string	_message_buffer; // data send to the server
+		bool		_disconnected;
 		// std::vector<Channel> _channel_list;	
 		// std::vector<bool> _user_mode; // only operators OR basic user
 		// Last Activity Timestamp???
@@ -46,6 +48,7 @@ class Client
 		void		setStatus(int status);
 		void		setSocketFd(int socket_fd);
 		void		setMessage(std::string message);
+		void		setDisconnected(bool status);
 
 		std::string	getUsername(void);
 		std::string	getRealName(void);
@@ -53,6 +56,7 @@ class Client
 		int			getStatus(void);
 		int			getSocketFd(void);
 		std::string	getMessage(void);
+		bool		getDisconnected(void);
 };
 
 #endif

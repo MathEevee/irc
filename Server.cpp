@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbriand <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/20 01:51:35 by mbriand          ###   ########.fr       */
+/*   Updated: 2024/10/21 13:40:21 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 	for (std::vector<Client>::iterator it = this->_client_list.begin(); it != this->_client_list.end() - new_client;)
 	{
 		std::string	message = it->getMessage();
-		bool	connexion = true;
 		if ((fds[i].revents & POLLIN) != 0)
 		{
 			do
@@ -87,21 +86,21 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 				size = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
 				if (size == 0)
 				{
-					close(it->getSocketFd());
-					std::cout << "Client disconnected." << std::endl;
+					it->setDisconnected(true);
 					it = this->_client_list.erase(it);
 				}
 				buffer[size] = 0;
 				message = message + buffer;
 				it->setMessage(message);
 			} while (size == 1024);
-			connexion = process_commands(*it);
 			i++;
 			if (size == 0)
 				continue;
 		}
-		if (connexion == true)
+		if ((*it).getDisconnected() == false)
 			it++;
+		else
+			this->sendToAll(*it);
 	}
 }
 
@@ -148,6 +147,14 @@ void	Server::commands_parsing(Client &client, std::string input)
 
 	(void) result; // how do u want to use this variable?
 }
+
+void	Server::sendToAll(Client &client)
+{
+	//for() loop all chann to send in all channel disconnected
+	std::string all_message = client.getNickname() + ": " + "disconnected" + "\r\n";
+	send(this->getServerSocket(), all_message.c_str(), all_message.size(), 0);
+}
+
 
 Server::Server(int port, std::string password)
 {
