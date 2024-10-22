@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:58:11 by mbriand           #+#    #+#             */
-/*   Updated: 2024/10/21 14:39:04 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:44:32 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 // Check is the provide password is the good password
 bool	Server::checkPass(Client &client, std::string password)
 {
+	std::cout << "|" << password << "|"  << std::endl;
 	if (this->getPassword() == password && client.getStatus() == 0)
 	{
 		std::cout << "Client authentificated." << std::endl;
-		std::string client_msg = ":" + _name + ": Your are authentificated." + "\n";
-		send(client.getSocketFd(), client_msg.c_str(), client_msg.size(), 0);		
+		std::string client_msg = ":" + _name + ": Your are authentificated." + "\r\n";
+		send(client.getSocketFd(), client_msg.c_str(), client_msg.size(), 0);
 		client.setStatus(1);
 		return (true);
 	}
@@ -40,7 +41,6 @@ bool	Server::checkUser(Client& client, std::string data)
 	std::string tmp = data;
 	int i = 0;
 
-	std::cout << "data = " << data << std::endl;
 	if (client.getStatus() == 0)
 	{
 		//add error_send
@@ -49,10 +49,14 @@ bool	Server::checkUser(Client& client, std::string data)
 	}
 	
 	// checkData for #, @
+	std::cout << data << std::endl;
 	for (std::string::iterator it = data.begin(); it != data.end(); it++)
 	{
-		if (isalnum(*it) != 0 || *it != ' ' || )
-			//bad data return false
+		if (isalnum(*it) == 0 && *it != ' ' && *it != '-' && *it != '_' && *it != '`' && *it != '^' && *it != '{' && *it != '}')
+		{
+			client.send_error(421, "USER :Unknown command");
+			return (false);
+		}
 	}
 	
 	if (!client.getUsername().size())
@@ -67,21 +71,18 @@ bool	Server::checkUser(Client& client, std::string data)
 			if (i == 3)
 				real_name = data.substr(data.find_last_of(' ') + 1);
 			tmp = tmp.substr(tmp.find(' ') + 1);
-			if (isalpha(tmp[0]) < 0)
-			{
-				//check_len
-				//bad letter for arg
-			}
 			i++;
 		}
 
 		if (tmp != real_name)
 		{
 			//error to many args
+			client.send_error(461, "USER :Not enough parameters");
 			return (false);
 		}
 		client.setUsername(username);
 		client.setRealName(real_name);
+		//client set Username
 		return (true);
 	}
 	return (false);
@@ -106,7 +107,8 @@ bool	Server::checkNick(Client &client, std::string data) // recheck this functio
 		client.send_error(432, data + " :Erroneous Nickname");
 		return (false);
 	}
-	for (size_t i = 1; i < data.length(); ++i)
+
+	for (size_t i = 1; i < data.length() && data[i] != ' '; ++i)
 	{
 		if (!isalnum(data[i]) && data[i] != '-' && data[i] != '|' && data[i] != '_' &&
 			data[i] != '\\' && data[i] != '`' && data[i] != '^' && data[i] != '{' && data[i] != '}')
@@ -176,8 +178,11 @@ bool	Server::checkPrivmsg(Client &client, std::string data)
 
 // QUIT :jdjdjjd (with a reason)
 // QUIT (without reason)
-// bool Server::checkQuit(Client &client, std::string data)
-// {
+bool Server::checkQuit(Client &client, std::string data)
+{
+	(void) client;
+	std::cout << data << std::endl;
+	return (true);
 // 	if (data.empty())
 // 	{
 // 		std::cout << "Client quit without a reason." << std::endl;
@@ -190,7 +195,7 @@ bool	Server::checkPrivmsg(Client &client, std::string data)
 // 		// client.disconnect(data.substr(1));
 // 	}
 //	return (true);
-// }
+}
 
 /*
 	1. Join or create a non-protected channel: "JOIN #publicChannel"

@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:36:54 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/21 13:27:36 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:17:20 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 class Client
 {
 	private :
-		std::string	_username;
 		// hostname ??
 		// servername ??
+		std::string	_username;
 		std::string	_real_name;
 		std::string	_nickname;
 		int			_status;
@@ -41,6 +41,9 @@ class Client
 
 		Client(int socket_fd);
 		~Client();
+		Client(const Client &obj);
+
+		Client		&operator=(const Client &obj);
 
 		void		setUsername(std::string username);
 		void		setRealName(std::string real_name);

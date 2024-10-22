@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:47:20 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/21 13:41:17 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:16:20 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,23 @@ Client::Client(int socket_fd)
 
 Client::~Client()
 {}
+
+Client::Client(const Client &obj)
+{
+	*this = obj;
+}
+
+Client	&Client::operator=(const Client &obj)
+{
+	_username = obj._username;
+	_real_name = obj._real_name;
+	_nickname = obj._nickname;
+	_status = obj._status;
+	_socket_fd = obj._socket_fd;
+	_message_buffer = obj._message_buffer;
+	_disconnected = obj._disconnected;
+	return *this;
+}
 
 std::string	Client::getUsername(void)
 {
@@ -95,8 +112,6 @@ void	Client::setNickname(std::string nickname)
 
 void	Client::setStatus(int status)
 {
-	if (status == true)
-		close(this->getSocketFd());
 	this->_status = status;
 }
 
@@ -112,6 +127,8 @@ void	Client::setMessage(std::string message)
 
 void	Client::setDisconnected(bool status)
 {
+	if (status == true)
+		close(this->getSocketFd());
 	this->_disconnected = status;
 }
 

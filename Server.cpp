@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:26:06 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/21 13:40:21 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:09:35 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	Server::runtime()
 		{
 			new_client = add_client();
 		}
-		read_all_clients(fds, new_client);
+		if (new_client == true || this->_client_list.size() != 0)
+			read_all_clients(fds, new_client);
 	}
 }
 
@@ -87,20 +88,19 @@ void	Server::read_all_clients(struct pollfd fds[NB_MAX_CLIENTS + 1], bool new_cl
 				if (size == 0)
 				{
 					it->setDisconnected(true);
-					it = this->_client_list.erase(it);
+					this->sendToAll(*it);
 				}
 				buffer[size] = 0;
 				message = message + buffer;
 				it->setMessage(message);
 			} while (size == 1024);
+			this->process_commands(*it);
 			i++;
-			if (size == 0)
-				continue;
 		}
 		if ((*it).getDisconnected() == false)
 			it++;
 		else
-			this->sendToAll(*it);
+			it = this->_client_list.erase(it);
 	}
 }
 
@@ -115,6 +115,7 @@ bool	Server::process_commands(Client &client)
 		std::string command = message.substr(0, message.find("\n"));
 		message = message.substr(message.find("\n") + 1);
 		client.setMessage(message);
+		std::cout << "command in proccess commands " << command << std::endl;
 		commands_parsing(client, command);
 	}
 	return (true);
@@ -130,6 +131,7 @@ void	Server::commands_parsing(Client &client, std::string input)
 	result = false;
 	// command_len = input.find(' ');
 	command = input.substr(0, input.find(' '));
+	std::cout << "command : " << command << std::endl;
 	if (input.find(' ') ==  std::string::npos)
 		return ;
 	if (command == "PASS")
@@ -142,7 +144,7 @@ void	Server::commands_parsing(Client &client, std::string input)
 	//add checkpoint to check user initialized, not initialized send error & stop
 	if (command == "PRIVMSG")
 		result = checkPrivmsg(client, input.substr(input.find(' ') + 1));
-	if (command == "JOIN")
+	else if (command == "JOIN")
 		result = checkJoin(client, input.substr(input.find(' ') + 1));
 
 	(void) result; // how do u want to use this variable?
@@ -152,7 +154,7 @@ void	Server::sendToAll(Client &client)
 {
 	//for() loop all chann to send in all channel disconnected
 	std::string all_message = client.getNickname() + ": " + "disconnected" + "\r\n";
-	send(this->getServerSocket(), all_message.c_str(), all_message.size(), 0);
+	// send(this->getServerSocket(), all_message.c_str(), all_message.size(), 0);
 }
 
 
@@ -161,7 +163,6 @@ Server::Server(int port, std::string password)
 	this->_name = "thewonderfulserver";
 	this->_password = password;
 	this->_server_socket = socket(AF_INET, SOCK_STREAM, 0);
-
 	this->_serverAddress.sin_family = AF_INET;
 	this->_serverAddress.sin_port = htons(port);
 	this->_serverAddress.sin_addr.s_addr = INADDR_ANY;

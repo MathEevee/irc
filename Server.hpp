@@ -6,7 +6,7 @@
 /*   By: matde-ol <matde-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 14:25:59 by matde-ol          #+#    #+#             */
-/*   Updated: 2024/10/21 13:30:54 by matde-ol         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:18:35 by matde-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ class Server
 		bool	checkUser(Client &client, std::string data);
 		bool	checkNick(Client &client, std::string data);
 		bool	checkPrivmsg(Client &client, std::string data);
-		// bool 	checkQuit(Client &client, std::string data);
-		bool 	checkJoin(Client &client, std::string param);		
+		bool 	checkQuit(Client &client, std::string data);
+		bool 	checkJoin(Client &client, std::string param);
 		// Ping
 		// pong
 
